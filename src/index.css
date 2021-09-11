@@ -1,1 +1,5 @@
 @import 'semantic-ui-css/semantic.min.css';
+
+#header-icon {
+  padding: 10px;
+};
