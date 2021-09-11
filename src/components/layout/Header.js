@@ -1,11 +1,13 @@
-import React from 'react';
-import { Menu, Input, Grid } from 'semantic-ui-react'
+import React, { useState } from 'react';
+import { Menu, Form } from 'semantic-ui-react'
 import { useHistory } from 'react-router-dom';
 import { ROUTE_HOME, ROUTE_SEARCH_USER } from '../config/routes.js';
+import { getUser } from '../../api/users.js';
 import icon from '../../assets/my-icon.png';
 
 const Header = () => {
   const history = useHistory();
+  const [searchValue, setSearchValue] = useState('');
 
   return (
     <Menu inverted attached size='large'>
@@ -26,7 +28,14 @@ const Header = () => {
       </Menu.Item>
       <Menu.Menu position='right'>
         <Menu.Item>
-          <Input size='small' icon='search' placeholder='Search User...' />
+          <Form onSubmit={async () => getUser(searchValue)}>
+          <Form.Input 
+            size='small'
+            icon='search' 
+            placeholder='Search User...'
+            onChange={e => setSearchValue(e.target.value)}
+          />
+          </Form>
         </Menu.Item>
       </Menu.Menu>
     </Menu>

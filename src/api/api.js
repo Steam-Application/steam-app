@@ -1,9 +1,10 @@
 import axios from 'axios';
 
-const steamApi = axios.create({
-  baseUrl: 'http://api.steampowered.com/'
+const steam = axios.create({
+  baseURL: 'http://api.steampowered.com',
+  headers: { 'Access-Control-Allow-Origin': '*'}
 });
 
 export {
- steamApi
+ steam
 };
