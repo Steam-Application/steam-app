@@ -1,9 +1,6 @@
 import axios from 'axios';
 
-const steam = axios.create({
-  baseURL: 'http://api.steampowered.com',
-  headers: { 'Access-Control-Allow-Origin': '*'}
-});
+const steam = axios.create({ baseURL: process.env.REACT_APP_API });
 
 export {
  steam
