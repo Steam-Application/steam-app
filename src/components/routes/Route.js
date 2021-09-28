@@ -1,21 +1,15 @@
 import React from 'react';
 import { Content, Header } from '../layout/Layout.js';
-import { Route as ARoute } from 'react-router-dom';
-import { Grid } from 'semantic-ui-react'
-
+import { Route as MyRoute } from 'react-router-dom';
 
 const Route = ({ children, ...props }) => {
   return (
-    <ARoute {...props}>
+    <MyRoute {...props}>
       <Header />
-      <Grid centered>
-        <Grid.Row>
-          <Content>
-            {children}
-          </Content>
-        </Grid.Row>
-      </Grid>
-    </ARoute>
+      <Content>
+        {children}
+      </Content>
+    </MyRoute>
   );
 };
 

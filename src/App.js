@@ -1,12 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Routes from './components/routes/Routes.js';
+import Router from './components/routes/Router.js';
+import { createTheme, ThemeProvider } from '@mui/material';
+import { themeOptions } from './Theme.js';
+
+const theme = createTheme(themeOptions);
 
 const App = () => {
   return (
-    <Router>
-      <Routes />
-    </Router>
+    <ThemeProvider theme={theme}>
+      <Router />
+    </ThemeProvider>
   );
 }
 
