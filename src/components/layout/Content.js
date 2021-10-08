@@ -1,11 +1,13 @@
 import React from 'react';
-import { Paper } from '@mui/material';
+import { Container, Grid } from '@mui/material';
 
 const Content = ({ children }) => {
   return (
-    <Paper sx={{ h: '100%', ml: '2rem', mr: '2rem' }}>
-      {children}
-    </Paper>
+    <Container maxWidth="false">
+      <Grid container justifyContent="center">
+        {children}
+      </Grid>
+    </Container>
   );
 };
 

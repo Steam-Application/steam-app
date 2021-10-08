@@ -20,4 +20,11 @@ export const themeOptions = {
       main: '#ff9800',
     },
   },
+  components: {
+    MuiPaper: {
+      defaultProps: {
+        elevation: 5
+      }
+    }
+  }
 };
