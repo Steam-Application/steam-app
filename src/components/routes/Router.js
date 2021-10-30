@@ -1,17 +1,30 @@
 import React from 'react';
+import Route from './Route.js';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
-import Route from './Route.js';
-import Home from '../../containers/Home.js';
+import {
+  Home,
+  Profile
+} from '../../containers';
 
 import {
-  ROUTE_HOME
+  ROUTE_HOME,
+  ROUTE_PROFILE
 } from '../../config/routes.js';
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Switch>
+        <Route exact path={ROUTE_HOME}>
+          <Home />
+        </Route>
+        <Route exact path={`${ROUTE_PROFILE}/:steamId`}>
+          <Profile />
+        </Route>
+        <Route exact path={ROUTE_HOME}>
+          <Home />
+        </Route>
         <Route exact path={ROUTE_HOME}>
           <Home />
         </Route>

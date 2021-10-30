@@ -1,12 +1,10 @@
 import React from 'react';
-import { Container, Grid } from '@mui/material';
+import { Container } from '@mui/material';
 
 const Content = ({ children }) => {
   return (
-    <Container maxWidth="false">
-      <Grid container justifyContent="center">
-        {children}
-      </Grid>
+    <Container maxWidth='false' sx={{ height: 'calc(100% - 6rem)' }}>
+      {children}
     </Container>
   );
 };
