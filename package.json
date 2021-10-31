@@ -1,5 +1,6 @@
 {
-  "name": "my-app",
+  "homepage": "https://rgreenan55.github.io/steam-app/",
+  "name": "steam-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,13 +9,17 @@
     "@mui/icons-material": "^5.0.1",
     "@mui/material": "^5.0.1",
     "axios": "^0.21.4",
+    "gh-pages": "^3.2.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router-dom": "^5.3.0",
     "react-scripts": "4.0.3"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
