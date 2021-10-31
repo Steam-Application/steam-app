@@ -9,7 +9,7 @@ const Header = () => {
       <Toolbar>
         <MenuItem component={Link} to={ROUTE_HOME}>
           <Typography variant='h5'>
-            Apollo
+            Steam App
           </Typography>
         </MenuItem>
       </Toolbar>
