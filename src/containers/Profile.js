@@ -1,26 +1,57 @@
 import React, { useEffect, useState } from 'react';
-import { Paper, Box, Typography } from '@mui/material';
-import { getUser } from '../api/profile';
+import { useParams } from 'react-router';
+import { Paper, Box, Grid, Avatar, Typography } from '@mui/material';
+import { timestampToDate } from '../util/conveters';
+import { searchUser } from '../api/profile';
 
 const Profile = () => {
+  const { steamId } = useParams();
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    const getUserData = async () => {
-      //const user = await getUser('Boebi_G');
-      //setData(user);
-    };
-    
-    getUserData();
-  }, []);
+    if (steamId) {
+      const getUserData = async () => {
+        setData(await searchUser(steamId));
+      };
+      
+      getUserData();
+    } else {
+      // Error
+    }
+  }, [steamId]);
+
+  console.log(data);
+
+  // User Data Values
+  // primaryclanid
+  // loccountrycode
+  // gameid - Id currently played game 
 
   return (
-    <Paper sx={{ ml: '0.5rem', minHeight: '100%', width: '99%' }}>
-      <Box sx={{ display: 'flex', p: '1rem' }}>
-        <img src={data?.avatarfull} alt='' />
-        <Typography variant='h3'> {data?.personaname} </Typography>
-      </Box>
-    </Paper>
+    <>
+      <Paper sx={{ height: '25%', mb: '2rem', bgcolor: '#1e2020' }}>
+        {data && (
+          <Box sx={{ display: 'flex', p: '1rem' }}>
+            <Grid item xs={6} sx={{ display: 'flex' }}>
+              <Avatar variant='square' src={data.avatarfull} sx={{ height: '10rem', width: 'auto' }} />
+              <Box ml='1rem'>
+                <Typography variant='h2' color='white'> {data.personaname} </Typography>
+                <Typography variant='subtitle1' ml='0.25rem' color='white' mb='2rem'> {data.steamid} </Typography>
+                <Typography variant='subtitle1' ml='0.25rem' color='white'> Created: {timestampToDate(data.timecreated)} </Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={6} align='right'>
+              {data.gameextrainfo && <Typography color='white'> Playing: {data.gameextrainfo} </Typography>}
+            </Grid>
+          </Box>
+        )}
+      </Paper>
+      <Paper sx={{ height: '70%', bgcolor: '#1e2020' }}>
+        {data && (
+          <div />
+        )}
+      </Paper>
+    </>
   );
 };
 

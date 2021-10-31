@@ -11,7 +11,7 @@ export const searchUser = async (searchTerm) => {
     const result = await steam.get('/profile/resolveId', { params: { username }});
     data = result.data.response;
 
-    if (data.success != 1) {
+    if (data.success !== 1) {
       return 'No User'
     }
   }

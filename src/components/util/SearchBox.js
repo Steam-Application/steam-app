@@ -32,6 +32,7 @@ const SearchBox = ({ search, ...props }) => {
     }, 750);
 
     return () => clearTimeout(delay);
+    // eslint-disable-next-line
   }, [searchTerm]);
 
   return (
