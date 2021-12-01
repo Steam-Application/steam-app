@@ -1,17 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Paper, Box, Grid, Avatar, Typography } from '@mui/material';
-import { timestampToDate } from '../util/conveters';
-import { searchUser } from '../api/profile';
+import { Paper, Grid, Typography, Stack } from '@mui/material';
+import { getUserProfile, searchUser } from '../api/profile';
+import GameCard from '../components/cards/GameCard';
+import UserCard from '../components/cards/UserCard';
+import Loading from '../components/util/Loading';
+import getEmptyGameCards from '../components/cards/EmptyGameCard';
 
 const Profile = () => {
   const { steamId } = useParams();
-  const [data, setData] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [gameData, setGameData] = useState(null);
 
   useEffect(() => {
     if (steamId) {
       const getUserData = async () => {
-        setData(await searchUser(steamId));
+        setUserData(await searchUser(steamId));
+        
+        await getUserProfile(steamId).then(info => {
+          setGameData(info.RecentGames);
+        })
       };
       
       getUserData();
@@ -20,35 +28,40 @@ const Profile = () => {
     }
   }, [steamId]);
 
-  console.log(data);
-
   // User Data Values
   // primaryclanid
   // loccountrycode
   // gameid - Id currently played game 
+  console.log(gameData);
 
   return (
     <>
-      <Paper sx={{ height: '25%', mb: '2rem', bgcolor: '#1e2020' }}>
-        {data && (
-          <Box sx={{ display: 'flex', p: '1rem' }}>
-            <Grid item xs={6} sx={{ display: 'flex' }}>
-              <Avatar variant='square' src={data.avatarfull} sx={{ height: '10rem', width: 'auto' }} />
-              <Box ml='1rem'>
-                <Typography variant='h2' color='white'> {data.personaname} </Typography>
-                <Typography variant='subtitle1' ml='0.25rem' color='white' mb='2rem'> {data.steamid} </Typography>
-                <Typography variant='subtitle1' ml='0.25rem' color='white'> Created: {timestampToDate(data.timecreated)} </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={6} align='right'>
-              {data.gameextrainfo && <Typography color='white'> Playing: {data.gameextrainfo} </Typography>}
-            </Grid>
-          </Box>
-        )}
+      {/* User Profile Box */}
+      <Paper sx={{ height: '25%', mb: '1rem', bgcolor: '#1e2020' }}>
+        {userData ? <UserCard user={userData} /> : <Loading color='white' />}
       </Paper>
-      <Paper sx={{ height: '70%', bgcolor: '#1e2020' }}>
-        {data && (
-          <div />
+      
+      {/* Bottom Portion of Profile */}
+      <Paper sx={{ p: '1rem', height: '125%', bgcolor: '#1e2020' }}>
+        {gameData && (
+          <Paper sx={{ height: '100%' }}>
+            <Grid container xs={12} sx={{ height: '100%' }}>
+
+              {/* Recent Games */}
+              <Grid align='center' xs={2.5} sx={{ p: '0.75rem' }}>
+                <Typography variant='h5'> Recent Games </Typography>
+                <Stack spacing={2} sx={{ height: '100%' }}>
+                  {gameData?.map(game => <GameCard game={game} />)}
+                  {gameData?.length < 5 && getEmptyGameCards(5 - gameData.length)}
+                </Stack>
+              </Grid>
+
+              {/* Idk Yet */}
+              <Grid xs={9.5} sx={{ borderLeft: 1, borderRight: 1, p: '1rem' }}>
+                <p> hi </p>
+              </Grid>
+            </Grid>
+          </Paper>
         )}
       </Paper>
     </>
