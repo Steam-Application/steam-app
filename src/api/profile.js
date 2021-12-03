@@ -1,10 +1,10 @@
 import { steam } from './api';
 
-const idCheck = /^\d{17}$/
-
 export const searchUser = async (searchTerm) => {
   const split = searchTerm.split('/').filter(x => x);
   const username = split[split.length - 1];
+  const idCheck = /^\d{17}$/
+
   let data = null;
 
   if (!username.match(idCheck)) {
@@ -22,8 +22,8 @@ export const searchUser = async (searchTerm) => {
   return user.data.response.players[0];
 };
 
-export const getUserProfile = async (steamid) => {
-  const result = await steam.get('/profile/userProfile', { params: { steamid }});
+export const getRecentGames = async (steamid) => {
+  const result = await steam.get('/profile/recentGames', { params: { steamid }});
 
   console.log(result.data);
 

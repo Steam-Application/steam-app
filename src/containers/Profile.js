@@ -1,41 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Paper, Grid, Typography, Stack } from '@mui/material';
-import { getUserProfile, searchUser } from '../api/profile';
-import GameCard from '../components/cards/GameCard';
-import UserCard from '../components/cards/UserCard';
-import Loading from '../components/util/Loading';
-import getEmptyGameCards from '../components/cards/EmptyGameCard';
+import { Paper, Grid, Typography, Stack, Tab } from '@mui/material';
+import { TabList, TabPanel, TabContext } from '@mui/lab';
+import { UserCard, GameCard, getEmptyGameCards } from '../components/cards';
+import { Table, Loading } from '../components/util'
+import { GameLibraryHeaders } from '../config/tableHeaders';
+import { searchUser } from '../api/profile';
+import { getRecentGames, getOwnedGames } from '../api/games';
 
 const Profile = () => {
   const { steamId } = useParams();
+  const [tab, setTab] = useState(1);
   const [userData, setUserData] = useState(null);
-  const [gameData, setGameData] = useState(null);
+  const [recentGames, setRecentGames] = useState([]);
 
   useEffect(() => {
     if (steamId) {
       const getUserData = async () => {
         setUserData(await searchUser(steamId));
-        
-        await getUserProfile(steamId).then(info => {
-          setGameData(info.RecentGames);
-        })
+        setRecentGames(await getRecentGames(steamId));
       };
       
       getUserData();
     } else {
-      // Error
+      // Handle Error
     }
   }, [steamId]);
 
-  // User Data Values
-  // primaryclanid
-  // loccountrycode
-  // gameid - Id currently played game 
-  console.log(gameData);
+  /*  User Data Values
+      > primaryclanid
+      > loccountrycode
+      > gameid - Id currently played game 
+  */
+  console.log(recentGames);
 
   return (
     <>
+      {/* Achievement Modal? */}
+
       {/* User Profile Box */}
       <Paper sx={{ height: '25%', mb: '1rem', bgcolor: '#1e2020' }}>
         {userData ? <UserCard user={userData} /> : <Loading color='white' />}
@@ -43,26 +45,39 @@ const Profile = () => {
       
       {/* Bottom Portion of Profile */}
       <Paper sx={{ p: '1rem', height: '125%', bgcolor: '#1e2020' }}>
-        {gameData && (
           <Paper sx={{ height: '100%' }}>
             <Grid container xs={12} sx={{ height: '100%' }}>
 
               {/* Recent Games */}
               <Grid align='center' xs={2.5} sx={{ p: '0.75rem' }}>
-                <Typography variant='h5'> Recent Games </Typography>
-                <Stack spacing={2} sx={{ height: '100%' }}>
-                  {gameData?.map(game => <GameCard game={game} />)}
-                  {gameData?.length < 5 && getEmptyGameCards(5 - gameData.length)}
-                </Stack>
+                {recentGames && (
+                  <>
+                    <Typography variant='h5'> Recently Played </Typography>
+                    <Stack spacing={2} sx={{ height: '100%' }}>
+                      {recentGames?.map(game => <GameCard game={game} />)}
+                      {recentGames?.length < 5 ? getEmptyGameCards(5-recentGames?.length) : null}
+                    </Stack>
+                  </>
+                )}
               </Grid>
 
-              {/* Idk Yet */}
-              <Grid xs={9.5} sx={{ borderLeft: 1, borderRight: 1, p: '1rem' }}>
-                <p> hi </p>
+              {/* Tables */}
+              <Grid xs={9.5} sx={{ height: '100%', borderLeft: 1, borderRight: 1, p: '1rem' }}>
+                <TabContext value={tab}>
+                  <TabList onChange={(e, v) => setTab(v)}>
+                    <Tab label="Game Library" value={1} />
+                    <Tab label="Temp" value={2} />
+                  </TabList>
+                  <TabPanel value={1} sx={{ p: 0, boxShadow: 0, height: '90%' }}>
+                    <Table headers={GameLibraryHeaders} getData={getOwnedGames} params={steamId} defaultSort={[{ field: 'playtime_forever', sort: 'desc' }]} />
+                  </TabPanel>
+                  <TabPanel value={2}>
+                    <p> Hi </p>
+                  </TabPanel>
+                </TabContext>
               </Grid>
             </Grid>
           </Paper>
-        )}
       </Paper>
     </>
   );

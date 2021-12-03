@@ -1,6 +1,6 @@
 import React from 'react';
-import SearchUser from '../components/boxes/SearchUser';
 import { Grid, Paper } from '@mui/material';
+import { SearchUser } from '../components/boxes';
 
 const Home = () => {
   return (

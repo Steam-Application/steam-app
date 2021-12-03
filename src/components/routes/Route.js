@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route as ReactRoute } from 'react-router-dom';
-import { Header, Content } from '../layout/Layout.js';
+import { Header, Content } from '../layout';
 
 const Route = ({ children, ...props }) => {
   return (

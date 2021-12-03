@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, CardActionArea, CardMedia, Typography } from '@mui/material';
+import { Card, CardActionArea, CardMedia, Box, Typography, Tooltip } from '@mui/material';
+import { minToHourMin } from '../../util/conveters';
 
 const GameCard = ({ game }) => {
   const onCardClick = () => {
@@ -17,9 +18,16 @@ const GameCard = ({ game }) => {
           image={`https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/${game.appid}/${game.img_logo_url}.jpg`}
           height='60%'
         />
-        <Typography variant='subtitle1' sx={{ height: '40%', maxHeight: '40%' }}>
-          {game.name}
-        </Typography>
+        <Box sx={{ height: '40%', maxHeight: '40%' }}>
+          <Tooltip title={game.name} placement='bottom' arrow>
+            <Typography noWrap variant='subtitle1' sx={{ pl: '1rem', pr: '0.5rem' }}>
+              {game.name}
+            </Typography>
+          </Tooltip>
+          <Typography noWrap variant='subtitle1'>
+            {minToHourMin(game.playtime_forever)}
+          </Typography>
+        </Box>
       </CardActionArea>
     </Card>
   );

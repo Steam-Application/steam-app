@@ -1,13 +1,13 @@
 import React from 'react';
 import { Card, CardActionArea, Box } from '@mui/material';
 
-const getEmptyGameCards = (num) => {
+export const getEmptyGameCards = (num) => {
   const EmptyGameCards = [];
 
   for (let i = 0; i < num; i++) EmptyGameCards.push(<EmptyGameCard />);
 
   return EmptyGameCards;
-}
+};
 
 const EmptyGameCard = () => {
   return (
@@ -20,4 +20,4 @@ const EmptyGameCard = () => {
   );
 };
 
-export default getEmptyGameCards;
+export default EmptyGameCard;
