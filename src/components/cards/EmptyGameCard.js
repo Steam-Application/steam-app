@@ -11,7 +11,7 @@ const getEmptyGameCards = (num) => {
 
 const EmptyGameCard = () => {
   return (
-    <Card sx={{ height: '17.5%', maxHeight: '17.5%' }}>
+    <Card sx={{ opacity: '0.5', height: '17.5%', maxHeight: '17.5%' }}>
       <CardActionArea sx={{ height: '100%' }}>
         <Box bgcolor='#1e2020' sx={{ height: '60%' }} />
         <Box sx={{ height: '40%' }} />

@@ -3,7 +3,11 @@ import { Box, Grid, Avatar, Button, Typography, Stack } from '@mui/material';
 import { timestampToDate } from '../../util/conveters';
 
 const UserCard = ({ user }) => {
-  console.log('user', user);
+  const onViewProfileClick = () => {
+    setTimeout(() => {
+      window.open(`https://steamcommunity.com/profiles/${user.steamid}`)
+    }, 200)
+  }
 
   return (
     <Box sx={{ display: 'flex', p: '1rem' }}>
@@ -23,7 +27,7 @@ const UserCard = ({ user }) => {
       </Grid>
       <Grid item xs={2} align='right'>
         <Stack spacing={8}>
-          <Button color='secondary' variant='contained' sx={{ width: '100%' }}>
+          <Button color='secondary' variant='contained' sx={{ width: '100%' }} onClick={onViewProfileClick}>
             View Profile
           </Button>
           {user.gameextrainfo && (
