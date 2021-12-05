@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { Paper, Grid, Typography, Stack, Tab } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 import { UserCard, GameCard, getEmptyGameCards } from '../components/cards';
+import { AchievementModal } from '../components/modals';
 import { Table, Loading } from '../components/util'
 import { GameLibraryHeaders } from '../config/tableHeaders';
 import { searchUser } from '../api/profile';
@@ -11,8 +12,13 @@ import { getRecentGames, getOwnedGames } from '../api/games';
 const Profile = () => {
   const { steamId } = useParams();
   const [tab, setTab] = useState(1);
+
+  // API Data
   const [userData, setUserData] = useState(null);
   const [recentGames, setRecentGames] = useState([]);
+
+  // Modals
+  const [game, setGame] = useState(null);
 
   useEffect(() => {
     if (steamId) {
@@ -25,18 +31,13 @@ const Profile = () => {
     } else {
       // Handle Error
     }
+    // eslint-disable-next-line
   }, [steamId]);
-
-  /*  User Data Values
-      > primaryclanid
-      > loccountrycode
-      > gameid - Id currently played game 
-  */
-  console.log(recentGames);
 
   return (
     <>
       {/* Achievement Modal? */}
+      <AchievementModal steamid={steamId} gameid={game} handleClose={() => setGame(null)} />
 
       {/* User Profile Box */}
       <Paper sx={{ height: '25%', mb: '1rem', bgcolor: '#1e2020' }}>
@@ -65,11 +66,18 @@ const Profile = () => {
               <Grid xs={9.5} sx={{ height: '100%', borderLeft: 1, borderRight: 1, p: '1rem' }}>
                 <TabContext value={tab}>
                   <TabList onChange={(e, v) => setTab(v)}>
-                    <Tab label="Game Library" value={1} />
+                    <Tab label='Game Library' value={1} />
                     <Tab label="Temp" value={2} />
                   </TabList>
                   <TabPanel value={1} sx={{ p: 0, boxShadow: 0, height: '90%' }}>
-                    <Table headers={GameLibraryHeaders} getData={getOwnedGames} params={steamId} defaultSort={[{ field: 'playtime_forever', sort: 'desc' }]} />
+                    <Table
+                      id={'appid'}
+                      headers={GameLibraryHeaders}
+                      getData={getOwnedGames}
+                      params={{ steamid: steamId }}
+                      defaultSort={[{ field: 'playtime_forever', sort: 'desc' }]}
+                      onRowClick={setGame}
+                    />
                   </TabPanel>
                   <TabPanel value={2}>
                     <p> Hi </p>

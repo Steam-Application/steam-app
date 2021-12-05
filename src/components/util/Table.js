@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
-const Table = ({ headers, getData, params, defaultSort, onRowClick }) => {
+const Table = ({ id, headers, customData, getData, params, defaultSort, onRowClick }) => {
   const [data, setData] = useState([]);
   const [sort, setSort] = useState(defaultSort);
 
@@ -15,14 +14,12 @@ const Table = ({ headers, getData, params, defaultSort, onRowClick }) => {
     // eslint-disable-next-line
   }, [params]);
 
-  console.log(data);
-
   return (
     <DataGrid
       columns={headers}
-      rows={data}
-      getRowId={row => row.appid}
-      onRowClick={onRowClick}
+      rows={customData || data}
+      getRowId={row => row[id]}
+      onRowClick={row => onRowClick(row.id)}
       sortModel={sort}
       onSortModelChange={model => setSort(model)}
       disableColumnMenu
@@ -32,6 +29,7 @@ const Table = ({ headers, getData, params, defaultSort, onRowClick }) => {
 
 Table.defaultProps = {
   headers: [],
+  customData: null,
   getData: () => [],
   defaultSort: [],
   onRowClick: () => null

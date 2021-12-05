@@ -6,7 +6,7 @@ const UserCard = ({ user }) => {
   const onViewProfileClick = () => {
     setTimeout(() => {
       window.open(`https://steamcommunity.com/profiles/${user.steamid}`)
-    }, 200)
+    }, 200);
   }
 
   return (
