@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Tab } from '@mui/material';
+import { Modal, Box, Tab, Grid, LinearProgress } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 import { Table, GameInfo } from '../util/';
 import { AchievementHeaders } from '../../config/tableHeaders';
@@ -34,17 +34,28 @@ const AchievementModal = ({ steamid, gameid, handleClose }) => {
     // eslint-disable-next-line
   }, []);
 
+  console.log(achievementData?.percent);
+
   return (
     <Modal open={gameid} onClose={handleClose} onBackdropClick={handleClose}>
       <Box sx={style}>
         <TabContext value={tab}>
 
           {/* Tabs */}
-          <TabList onChange={(e, v) => setTab(v)}>
-            <Tab value={1} label='Game' />
-            <Tab value={2} label='Achieved' />
-            <Tab value={3} label='Locked' />
-          </TabList>
+          <Box sx={{ display: 'flex' }}>
+            <TabList onChange={(e, v) => setTab(v)}>
+              <Tab value={1} label='Game' />
+              <Tab value={2} label='Achieved' />
+              <Tab value={3} label='Locked' />
+            </TabList>
+            {/* Updates Weirdly */}
+            <LinearProgress
+              value={achievementData?.percent}
+              variant='determinate'
+              color='secondary'
+              sx={{ position: 'absolute', height: '0.75rem', width: '15%', right: '32px', mt: '1rem' }}
+            />
+          </Box>
 
           {/* Game Info */}
           <TabPanel value={1} sx={{ p: 0, height: '95%' }}>

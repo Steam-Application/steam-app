@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import { Paper, Grid, Typography, Stack, Tab } from '@mui/material';
+import { Paper, Grid, Stack, Tab } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 import { UserCard, GameCard, getEmptyGameCards } from '../components/cards';
 import { AchievementModal } from '../components/modals';
-import { Table, Loading } from '../components/util'
+import { Loading, Table, Text } from '../components/util';
 import { GameLibraryHeaders } from '../config/tableHeaders';
 import { searchUser } from '../api/profile';
 import { getRecentGames, getOwnedGames } from '../api/games';
@@ -50,10 +50,10 @@ const Profile = () => {
             <Grid container xs={12} sx={{ height: '100%' }}>
 
               {/* Recent Games */}
-              <Grid align='center' xs={2.5} sx={{ p: '0.75rem' }}>
+              <Grid align='center' xs={2} sx={{ p: '0.75rem' }}>
                 {recentGames && (
                   <>
-                    <Typography variant='h5'> Recently Played </Typography>
+                    <Text variant='h5'> Recently Played </Text>
                     <Stack spacing={2} sx={{ height: '100%' }}>
                       {recentGames?.map(game => <GameCard game={game} />)}
                       {recentGames?.length < 5 ? getEmptyGameCards(5-recentGames?.length) : null}
@@ -63,7 +63,7 @@ const Profile = () => {
               </Grid>
 
               {/* Tables */}
-              <Grid xs={9.5} sx={{ height: '100%', borderLeft: 1, borderRight: 1, p: '1rem' }}>
+              <Grid xs={10} sx={{ height: '100%', borderLeft: 1, borderRight: 1, p: '1rem' }}>
                 <TabContext value={tab}>
                   <TabList onChange={(e, v) => setTab(v)}>
                     <Tab label='Game Library' value={1} />
