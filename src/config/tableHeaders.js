@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar } from '@mui/material';
-import { OverflowText, Text } from '../components/util';
+import { OverflowText } from '../components/util';
 import { minToHourMin } from '../util/conveters';
 
 export const GameLibraryHeaders = [

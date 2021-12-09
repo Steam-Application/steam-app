@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Tab, Grid, LinearProgress } from '@mui/material';
+import { Modal, Box, Tab, LinearProgress } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 import { Table, GameInfo } from '../util/';
 import { AchievementHeaders } from '../../config/tableHeaders';
