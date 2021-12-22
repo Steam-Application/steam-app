@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
+import { compareObjects } from '../../util/compare';
 
 const Table = ({ id, headers, customData, getData, params, defaultSort, onRowClick }) => {
   const [data, setData] = useState([]);
   const [sort, setSort] = useState(defaultSort);
+  const [prev, setPrev] = useState(null);
 
   useEffect(() => {
-    const getTableData = async () => {
-      setData(await getData(params));
-    };
+    if (!compareObjects(params, prev)) {
+      const getTableData = async () => {
+        setData(await getData(params));
+        setPrev(params);
+      };
 
-    getTableData();
+      getTableData();
+    }
     // eslint-disable-next-line
   }, [params]);
 

@@ -4,7 +4,7 @@ import { Card, CardActionArea, Box } from '@mui/material';
 export const getEmptyGameCards = (num) => {
   const EmptyGameCards = [];
 
-  for (let i = 0; i < num; i++) EmptyGameCards.push(<EmptyGameCard />);
+  for (let i = 0; i < num; i++) EmptyGameCards.push(<EmptyGameCard key={`${i}-${num}`} />);
 
   return EmptyGameCards;
 };

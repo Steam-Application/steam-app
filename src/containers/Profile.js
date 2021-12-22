@@ -11,13 +11,9 @@ import { getRecentGames, getOwnedGames } from '../api/games';
 
 const Profile = () => {
   const { steamId } = useParams();
-  const [tab, setTab] = useState(1);
-
-  // API Data
   const [userData, setUserData] = useState(null);
   const [recentGames, setRecentGames] = useState([]);
-
-  // Modals
+  const [tab, setTab] = useState('Library');
   const [game, setGame] = useState(null);
 
   useEffect(() => {
@@ -28,8 +24,6 @@ const Profile = () => {
       };
       
       getUserData();
-    } else {
-      // Handle Error
     }
     // eslint-disable-next-line
   }, [steamId]);
@@ -47,29 +41,34 @@ const Profile = () => {
       {/* Bottom Portion of Profile */}
       <Paper sx={{ p: '1rem', height: '125%', bgcolor: '#1e2020' }}>
           <Paper sx={{ height: '100%' }}>
-            <Grid container xs={12} sx={{ height: '100%' }}>
+            <Grid container sx={{ height: '100%' }}>
 
               {/* Recent Games */}
-              <Grid align='center' xs={2} sx={{ p: '0.75rem' }}>
+              <Grid item xs={2} align='center' sx={{ p: '0.75rem' }}>
                 {recentGames && (
                   <>
                     <Text variant='h5'> Recently Played </Text>
                     <Stack spacing={2} sx={{ height: '100%' }}>
-                      {recentGames?.map(game => <GameCard game={game} />)}
-                      {recentGames?.length < 5 ? getEmptyGameCards(5-recentGames?.length) : null}
+                      {recentGames?.map(game => (
+                        <GameCard key={game.appid} game={game} />
+                      ))}
+                      {recentGames?.length < 5
+                        ? getEmptyGameCards(5-recentGames?.length)
+                        : null
+                      }
                     </Stack>
                   </>
                 )}
               </Grid>
 
               {/* Tables */}
-              <Grid xs={10} sx={{ height: '100%', borderLeft: 1, borderRight: 1, p: '1rem' }}>
+              <Grid item xs={10} sx={{ height: '100%', borderLeft: 1, borderRight: 1, p: '1rem' }}>
                 <TabContext value={tab}>
                   <TabList onChange={(e, v) => setTab(v)}>
-                    <Tab label='Game Library' value={1} />
-                    <Tab label="Temp" value={2} />
+                    <Tab label='Game Library' value={'Library'} />
+                    <Tab label="Temp" value={'Temp'} />
                   </TabList>
-                  <TabPanel value={1} sx={{ p: 0, boxShadow: 0, height: '90%' }}>
+                  <TabPanel value={'Library'} sx={{ p: 0, boxShadow: 0, height: '90%' }}>
                     <Table
                       id={'appid'}
                       headers={GameLibraryHeaders}
@@ -79,11 +78,12 @@ const Profile = () => {
                       onRowClick={setGame}
                     />
                   </TabPanel>
-                  <TabPanel value={2}>
+                  <TabPanel value={'Temp'}>
                     <p> Hi </p>
                   </TabPanel>
                 </TabContext>
               </Grid>
+
             </Grid>
           </Paper>
       </Paper>

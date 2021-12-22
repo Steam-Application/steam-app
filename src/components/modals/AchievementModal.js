@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Tab, LinearProgress } from '@mui/material';
+import { Modal, Box, Tab } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
-import { Table, GameInfo } from '../util/';
+import { Table, Loading } from '../util/';
+import { GameInfo } from '../boxes';
 import { AchievementHeaders } from '../../config/tableHeaders';
 import { AchievementModalStyle as style } from './modalStyles';
 import { getGame } from '../../api/games';
@@ -10,17 +11,20 @@ import { getAchievements } from '../../api/achievements';
 const AchievementModal = ({ steamid, gameid, handleClose }) => {
   const [gameData, setGameData] = useState(null);
   const [achievementData, setAchievementData] = useState(null);
-  const [tab, setTab] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [tab, setTab] = useState('Game');
 
   useEffect(() => {
-    setTab(1);
+    setTab('Game');
     setGameData(null);
     setAchievementData(null);
 
     if (steamid && gameid) {
       const getData = async () => {
+        setLoading(true);
         setGameData(await getGame({ steamid, gameid }));
         setAchievementData(await getAchievements({ steamid, gameid }));
+        setLoading(false);
       };
 
       getData();
@@ -34,52 +38,55 @@ const AchievementModal = ({ steamid, gameid, handleClose }) => {
     // eslint-disable-next-line
   }, []);
 
-  console.log(achievementData?.percent);
-
   return (
-    <Modal open={gameid} onClose={handleClose} onBackdropClick={handleClose}>
+    <Modal open={gameid || false} onClose={handleClose} onBackdropClick={handleClose}>
       <Box sx={style}>
         <TabContext value={tab}>
 
           {/* Tabs */}
           <Box sx={{ display: 'flex' }}>
             <TabList onChange={(e, v) => setTab(v)}>
-              <Tab value={1} label='Game' />
-              <Tab value={2} label='Achieved' />
-              <Tab value={3} label='Locked' />
+              <Tab value={'Game'} label='Game' disabled={loading} />
+              <Tab value={'Achieved'} label='Achieved' disabled={loading} />
+              <Tab value={'Locked'} label='Locked' disabled={loading} />
             </TabList>
-            {/* Updates Weirdly */}
-            <LinearProgress
-              value={achievementData?.percent}
-              variant='determinate'
-              color='secondary'
-              sx={{ position: 'absolute', height: '0.75rem', width: '15%', right: '32px', mt: '1rem' }}
-            />
           </Box>
 
           {/* Game Info */}
-          <TabPanel value={1} sx={{ p: 0, height: '95%' }}>
-            <GameInfo info={gameData} />
+          <TabPanel value={'Game'} sx={{ p: 0, height: '95%' }}>
+            {!loading ? (
+              <GameInfo info={gameData} percent={achievementData?.percent} />
+            ) : (
+              <Loading size={50} />
+            )}
           </TabPanel>
 
           {/* Achieved Achievements */}
-          <TabPanel value={2} sx={{ p: 0, height: '95%' }}>
-            <Table
-              id={'apiname'}
-              customData={achievementData?.achieved}
-              headers={AchievementHeaders}
-              defaultSort={[{ field: 'percent', sort: 'desc' }]}
-            />
+          <TabPanel value={'Achieved'} sx={{ p: 0, height: '95%' }}>
+            {!loading ? (
+              <Table
+                id={'apiname'}
+                customData={achievementData?.achieved}
+                headers={AchievementHeaders}
+                defaultSort={[{ field: 'percent', sort: 'desc' }]}
+              />
+            ) : (
+              <Loading size={50} />
+            )}
           </TabPanel>
 
           {/* Locked Achievements */}
-          <TabPanel value={3} sx={{ p: 0, height: '95%' }}>
-            <Table
-              id={'apiname'}
-              customData={achievementData?.locked}
-              headers={AchievementHeaders}
-              defaultSort={[{ field: 'percent', sort: 'desc' }]}
-            />
+          <TabPanel value={'Locked'} sx={{ p: 0, height: '95%' }}>
+            {!loading ? (
+              <Table
+                id={'apiname'}
+                customData={achievementData?.locked}
+                headers={AchievementHeaders}
+                defaultSort={[{ field: 'percent', sort: 'desc' }]}
+              />
+            ) : (
+              <Loading size={50} />
+            )}
           </TabPanel>
 
         </TabContext>

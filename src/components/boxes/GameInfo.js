@@ -1,9 +1,10 @@
 import React from 'react';
 import { Grid, Avatar, Button, Stack, Divider } from '@mui/material';
+import { PercentCircle } from '../util';
 import { timestampToDate } from '../../util/conveters';
-import { OverflowText, Text } from './index';
+import { OverflowText, Text } from '../util/index';
 
-const GameInfo = ({ info }) => {
+const GameInfo = ({ info, percent }) => {
   const onViewStorePageClick = () => {
     setTimeout(() => {
       window.open(`https://store.steampowered.com/app/${info.game.appid}/`);
@@ -21,16 +22,19 @@ const GameInfo = ({ info }) => {
       {info && (
         <>
           {/* Avatar */}
-          <Grid item xs={5}>
-              <Avatar
-                variant='square'
-                src={`https://cdn.cloudflare.steamstatic.com/steam/apps/${info.game.appid}/header.jpg`}
-                sx={{ width: '100%', height: 'auto', boxShadow: 5 }}
-              />
+          <Grid item xs={5} borderRight={2} sx={{ pr: '0.5rem' }}>
+            <Avatar
+              variant='square'
+              src={`https://cdn.cloudflare.steamstatic.com/steam/apps/${info.game.appid}/header.jpg`}
+              sx={{ width: '100%', height: 'auto', boxShadow: 5, mb: '5rem'}}
+            />
+
+            <PercentCircle title='Achievements' percent={percent || 0} size={200} />
+            
           </Grid>
           
           {/* Title + View In Store */}
-          <Grid container xs={7} sx={{ pl: '1rem' }}>
+          <Grid container xs={7} borderleft={2} sx={{ pl: '0.5rem' }}>
             <Grid xs={8.5} sx={{ height: '25%' }}>
               <Text variant='h4' lines={2}>
                 {info.game.name}
