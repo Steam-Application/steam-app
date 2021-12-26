@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Tab } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
-import { Table, Loading } from '../util/';
+import { Table, Loading } from '../util';
 import { GameInfo } from '../boxes';
 import { AchievementHeaders } from '../../config/tableHeaders';
 import { AchievementModalStyle as style } from './modalStyles';
 import { getGame } from '../../api/games';
 import { getAchievements } from '../../api/achievements';
 
-const AchievementModal = ({ steamid, gameid, handleClose }) => {
+const GameModal = ({ steamid, gameid, handleClose }) => {
   const [gameData, setGameData] = useState(null);
   const [achievementData, setAchievementData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -95,4 +95,4 @@ const AchievementModal = ({ steamid, gameid, handleClose }) => {
   );
 };
 
-export default AchievementModal;
+export default GameModal;

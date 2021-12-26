@@ -1,7 +1,9 @@
 import React from 'react';
 import { Avatar } from '@mui/material';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 import { OverflowText } from '../components/util';
-import { minToHourMin } from '../util/conveters';
+import { minToHourMin, timestampToDate } from '../util/conveters';
 
 export const GameLibraryHeaders = [
   { 
@@ -35,6 +37,46 @@ export const GameLibraryHeaders = [
     sortComparator: (v1, v2) => v1 - v2
   }
 ];
+
+export const FriendListHeaders = [
+  {
+    field: 'avatar',
+    headerName: 'Avatar',
+    headerAlign: 'center',
+    align: 'center',
+    flex: 0.25,
+    sortable: false,
+    renderCell: (params) => (
+      <Avatar
+        variant='square'
+        src={params.row.avatar}
+        sx={{ width: 'auto' }}
+      />
+    )
+  },
+  {
+    field: 'personaname',
+    headerName: 'Name',
+    flex: 2
+  },
+  {
+    field: 'friend_since',
+    headerName: 'Friend Since',
+    flex: 2,
+    renderCell: (params) => timestampToDate(params.row.friend_since)
+  },
+  {
+    field: 'visible',
+    headerName: 'Visible?',
+    flex: 0.25,
+    headerAlign: 'center',
+    align: 'center',
+    sortable: false,
+    renderCell: (params) => params.row.communityvisibilitystate === 3
+      ? (<CheckCircleIcon sx={{ color: 'green' }} />)
+      : (<CancelIcon sx={{ color: 'red' }} />)
+  },
+]
 
 export const AchievementHeaders = [
   {

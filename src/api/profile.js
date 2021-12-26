@@ -19,13 +19,17 @@ export const searchUser = async (searchTerm) => {
   const steamid = data ? data.steamid : username;
   const user = await steam.get('/profile/userSummary', { params: { steamid }});
   
-  return user.data.response.players[0];
+  return user.data;
 };
 
 export const getRecentGames = async (steamid) => {
   const result = await steam.get('/profile/recentGames', { params: { steamid }});
 
-  console.log(result.data);
+  return result.data;
+};
+
+export const getFriendList = async ({ steamid }) => {
+  const result = await steam.get('/profile/friends', { params: { steamid }});
 
   return result.data;
-}
+};

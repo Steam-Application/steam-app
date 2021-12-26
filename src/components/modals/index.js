@@ -1,5 +1,5 @@
-import AchievementModal from './AchievementModal.js';
+import GameModal from './GameModal.js';
 
 export {
-  AchievementModal
+  GameModal
 };

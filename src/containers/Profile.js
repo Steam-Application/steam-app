@@ -3,10 +3,10 @@ import { useParams } from 'react-router';
 import { Paper, Grid, Stack, Tab } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 import { UserCard, GameCard, getEmptyGameCards } from '../components/cards';
-import { AchievementModal } from '../components/modals';
+import { GameModal } from '../components/modals';
 import { Loading, Table, Text } from '../components/util';
-import { GameLibraryHeaders } from '../config/tableHeaders';
-import { searchUser } from '../api/profile';
+import { GameLibraryHeaders, FriendListHeaders } from '../config/tableHeaders';
+import { searchUser, getFriendList } from '../api/profile';
 import { getRecentGames, getOwnedGames } from '../api/games';
 
 const Profile = () => {
@@ -31,7 +31,7 @@ const Profile = () => {
   return (
     <>
       {/* Achievement Modal? */}
-      <AchievementModal steamid={steamId} gameid={game} handleClose={() => setGame(null)} />
+      <GameModal steamid={steamId} gameid={game} handleClose={() => setGame(null)} />
 
       {/* User Profile Box */}
       <Paper sx={{ height: '25%', mb: '1rem', bgcolor: '#1e2020' }}>
@@ -66,7 +66,7 @@ const Profile = () => {
                 <TabContext value={tab}>
                   <TabList onChange={(e, v) => setTab(v)}>
                     <Tab label='Game Library' value={'Library'} />
-                    <Tab label="Temp" value={'Temp'} />
+                    <Tab label='Friend List' value={'FriendList'} />
                   </TabList>
                   <TabPanel value={'Library'} sx={{ p: 0, boxShadow: 0, height: '90%' }}>
                     <Table
@@ -78,8 +78,14 @@ const Profile = () => {
                       onRowClick={setGame}
                     />
                   </TabPanel>
-                  <TabPanel value={'Temp'}>
-                    <p> Hi </p>
+                  <TabPanel value={'FriendList'} sx={{ p: 0, boxShadow: 0, height: '90%' }}>
+                    <Table
+                      id={'steamid'}
+                      headers={FriendListHeaders}
+                      getData={getFriendList}
+                      defaultSort={[{ field: 'friend_since', sort: 'asc' }]}
+                      params={{ steamid: steamId }}
+                    />
                   </TabPanel>
                 </TabContext>
               </Grid>
