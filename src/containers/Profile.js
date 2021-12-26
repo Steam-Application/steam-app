@@ -30,7 +30,7 @@ const Profile = () => {
 
   return (
     <>
-      {/* Achievement Modal? */}
+      {/* Game / Achievement Modal */}
       <GameModal steamid={steamId} gameid={game} handleClose={() => setGame(null)} />
 
       {/* User Profile Box */}

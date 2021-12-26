@@ -39,7 +39,7 @@ const GameModal = ({ steamid, gameid, handleClose }) => {
   }, []);
 
   return (
-    <Modal open={gameid || false} onClose={handleClose} onBackdropClick={handleClose}>
+    <Modal open={gameid ? true : false} onClose={handleClose} onBackdropClick={handleClose}>
       <Box sx={style}>
         <TabContext value={tab}>
 
