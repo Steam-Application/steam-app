@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Tab } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
-import { Table, Loading } from '../util';
+import { Table, Loading, useNotification } from '../util';
 import { GameInfo } from '../boxes';
 import { AchievementHeaders } from '../../config/tableHeaders';
 import { AchievementModalStyle as style } from './modalStyles';
@@ -9,6 +9,7 @@ import { getGame } from '../../api/games';
 import { getAchievements } from '../../api/achievements';
 
 const GameModal = ({ steamid, gameid, handleClose }) => {
+  const [sendNotificaiton] = useNotification();
   const [gameData, setGameData] = useState(null);
   const [achievementData, setAchievementData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -22,8 +23,22 @@ const GameModal = ({ steamid, gameid, handleClose }) => {
     if (steamid && gameid) {
       const getData = async () => {
         setLoading(true);
-        setGameData(await getGame({ steamid, gameid }));
-        setAchievementData(await getAchievements({ steamid, gameid }));
+
+        try {
+          setGameData(await getGame({ steamid, gameid }));
+        } catch (error) {
+          sendNotificaiton({ message: 'Failed to retrieve game data', variant: 'error' });
+          handleClose();
+        }
+
+        try {
+          setAchievementData(await getAchievements({ steamid, gameid }));
+        } catch (error) {
+          if (gameData) {
+            sendNotificaiton({ message: 'Failed to retrieve achievement data', variant: 'error' })
+          }
+        }
+
         setLoading(false);
       };
 

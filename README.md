@@ -11,37 +11,52 @@ Various Web API endpoints:
 
 https://partner.steamgames.com/doc/webapi
 
-## NPM
-You will need NodeJS to run the application locally:
+
+# .ENV File
+Add ENV Variables Here
+```
+REACT_APP_API= ~API URL~
+```
+
+
+# Setup
+
+### Ensure you have npm installed
+``` npm -v ```
+
+If NodeJS / npm is not installed, download here:
 
 https://nodejs.org/en/download/
 
-## Yarn
-Install Yarn:
 
-https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable
+### Install Yarn
+``` yarn -v ```
 
-```
-npm install --global yarn
-```
+If not installed, install like this:
+
+``` npm install --global yarn ```
 
 
-```
-yarn --version
-```
+### Download Packages
+Downloads all required packages defined in package.json:
 
-## Running Application
-```
-yarn
-```
+``` yarn ```
 
-```
-yarn start
-```
+
+### Running Application
+Launches Application:
+
+``` yarn start ```
+
 
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-## Component Library
-Material UI:
 
+# Tools
+
+### ReactJS -- Language of Choice
+https://reactjs.org/
+
+
+### MaterialUI -- Component Library
 https://mui.com/getting-started/usage/

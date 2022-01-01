@@ -4,6 +4,7 @@ import PercentCircle from './PercentCircle.js';
 import SearchBox from './SearchBox.js';
 import Table from './Table.js';
 import Text from './Text.js';
+import useNotification from './useNotification.js';
 
 export {
   Loading,
@@ -12,4 +13,5 @@ export {
   SearchBox,
   Table,
   Text,
+  useNotification
 };

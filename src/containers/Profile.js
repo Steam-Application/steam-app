@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router';
+import { useHistory, useParams } from 'react-router';
 import { Paper, Grid, Stack, Tab } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 import { UserCard, GameCard, getEmptyGameCards } from '../components/cards';
 import { GameModal } from '../components/modals';
-import { Loading, Table, Text } from '../components/util';
+import { Loading, Table, Text, useNotification } from '../components/util';
+import { ROUTE_PROFILE } from '../config/routes';
 import { GameLibraryHeaders, FriendListHeaders } from '../config/tableHeaders';
 import { searchUser, getFriendList } from '../api/profile';
 import { getRecentGames, getOwnedGames } from '../api/games';
 
 const Profile = () => {
+  const history = useHistory();
   const { steamId } = useParams();
+  
+  const [sendNotificaiton] = useNotification();
+
   const [userData, setUserData] = useState(null);
   const [recentGames, setRecentGames] = useState([]);
   const [tab, setTab] = useState('Library');
@@ -19,8 +24,15 @@ const Profile = () => {
   useEffect(() => {
     if (steamId) {
       const getUserData = async () => {
-        setUserData(await searchUser(steamId));
-        setRecentGames(await getRecentGames(steamId));
+        try {
+          setUserData(await searchUser(steamId)); 
+        } catch(error) {
+          sendNotificaiton({ message: 'Failed to retrieve user data.', variant: 'error' });
+        }
+
+        try {
+          setRecentGames(await getRecentGames(steamId) || []);
+        } catch (error) { /* Do Nothing for Recent Games */ }
       };
       
       getUserData();
@@ -45,8 +57,6 @@ const Profile = () => {
 
               {/* Recent Games */}
               <Grid item xs={2} align='center' sx={{ p: '0.75rem' }}>
-                {recentGames && (
-                  <>
                     <Text variant='h5'> Recently Played </Text>
                     <Stack spacing={2} sx={{ height: '100%' }}>
                       {recentGames?.map(game => (
@@ -57,8 +67,6 @@ const Profile = () => {
                         : null
                       }
                     </Stack>
-                  </>
-                )}
               </Grid>
 
               {/* Tables */}
@@ -75,7 +83,12 @@ const Profile = () => {
                       getData={getOwnedGames}
                       params={{ steamid: steamId }}
                       defaultSort={[{ field: 'playtime_forever', sort: 'desc' }]}
-                      onRowClick={setGame}
+                      onRowClick={id => setGame(id)}
+                      onError={() => sendNotificaiton({
+                        message: 'Failed to retrieve game library',
+                        secondary: 'User profile may be private',
+                        variant: 'error' 
+                      })}
                     />
                   </TabPanel>
                   <TabPanel value={'FriendList'} sx={{ p: 0, boxShadow: 0, height: '90%' }}>
@@ -83,8 +96,17 @@ const Profile = () => {
                       id={'steamid'}
                       headers={FriendListHeaders}
                       getData={getFriendList}
-                      defaultSort={[{ field: 'friend_since', sort: 'asc' }]}
                       params={{ steamid: steamId }}
+                      defaultSort={[{ field: 'friend_since', sort: 'asc' }]}
+                      onRowClick={id => {
+                        history.push(`${ROUTE_PROFILE}/${id}`);
+                        window.location.reload();   // Refresh to prevent incorrect data from showing in tables.
+                      }}
+                      onError={() => sendNotificaiton({
+                        message: 'Failed to retrieve friend list',
+                        secondary: 'User profile may be private',
+                        variant: 'error'
+                      })}
                     />
                   </TabPanel>
                 </TabContext>

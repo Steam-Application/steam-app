@@ -1,17 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import { GridOverlay, DataGrid } from '@mui/x-data-grid';
+import { LinearProgress } from '@mui/material';
 import { compareObjects } from '../../util/compare';
 
-const Table = ({ id, headers, customData, getData, params, defaultSort, onRowClick }) => {
+const CustomLoadingOverlay = () => {
+  return (
+    <GridOverlay>
+      <div style={{ position: 'absolute', top: 0, width: '100%' }}>
+        <LinearProgress />
+      </div>
+    </GridOverlay>
+  );
+}
+
+const Table = ({ id, headers, customData, getData, params, defaultSort, onRowClick, onError }) => {
   const [data, setData] = useState([]);
   const [sort, setSort] = useState(defaultSort);
+  const [loading, setLoading] = useState(false);
   const [prev, setPrev] = useState(null);
 
   useEffect(() => {
     if (!compareObjects(params, prev)) {
       const getTableData = async () => {
-        setData(await getData(params));
+        setLoading(true);
+
+        try {
+          setData(await getData(params));
+        } catch (error) {
+          onError();
+        }
+
         setPrev(params);
+        setLoading(false);
       };
 
       getTableData();
@@ -21,10 +41,12 @@ const Table = ({ id, headers, customData, getData, params, defaultSort, onRowCli
 
   return (
     <DataGrid
+      components={{ LoadingOverlay: CustomLoadingOverlay }}
       columns={headers}
-      rows={customData || data}
+      rows={customData || data || []}
       getRowId={row => row[id]}
       onRowClick={row => onRowClick(row.id)}
+      loading={loading}
       sortModel={sort}
       onSortModelChange={model => setSort(model)}
       disableColumnMenu

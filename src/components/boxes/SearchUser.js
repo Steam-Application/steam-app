@@ -4,17 +4,23 @@ import { Box, Grid, Tooltip, Paper, Card, CardActionArea, Avatar } from '@mui/ma
 import HelpIcon from '@mui/icons-material/Help';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { SearchBox, Text } from '../util';
+import { SearchBox, Text, useNotification } from '../util';
 import { searchUser } from '../../api/profile';
 import { ROUTE_PROFILE } from '../../config/routes';
 
 const SearchUser = () => {
 	const history = useHistory();
+	const [sendNotificaiton] = useNotification();
   const [user, setUser] = useState(null);
 
   const search = async (searchTerm) => {
     if (searchTerm) {
-      setUser(await searchUser(searchTerm));
+			try {
+      	setUser(await searchUser(searchTerm));
+			} catch(error) {
+				sendNotificaiton({ message: 'Failed to search user', secondary: 'Server may be down. Try again later.', variant: 'error' })
+				setUser(null);
+			}
     } else {
 			setUser(null);
 		}
@@ -22,12 +28,11 @@ const SearchUser = () => {
 
   return (
     <>
-			{/* TODO: Implement this in searchbox */}
 			<Box mb='4rem'>
 				<Grid container>
 					<Text color='white' variant='subtitle1'> Search User </Text>
-					<Tooltip title='Input Profile URL or SteamId' placement='right'>
-						<HelpIcon fontSize='string' sx={{ color: 'gray' }} />
+					<Tooltip arrow title='Input Profile URL or SteamId' placement='right'>
+						<HelpIcon fontSize='string' sx={{ ml: '0.25rem', color: 'gray' }} />
 					</Tooltip>
 				</Grid>
 				<SearchBox search={search} />
@@ -35,9 +40,11 @@ const SearchUser = () => {
       {user && (
 				<>
 					{user === 'No User' ? (
-						<Paper align='center' sx={{ height: '4rem', p: '0.5rem' }}>
-							<Text mt='1rem'> No Results </Text>
-						</Paper>
+						<Box sx={{ height: '4rem' }}>
+							<Paper sx={{ height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+								<Text variant='h5'> No User Exists </Text>
+							</Paper>
+						</Box>
 					) : (
 						<Card
 							onClick={() => {
