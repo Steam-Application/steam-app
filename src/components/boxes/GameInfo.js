@@ -35,7 +35,7 @@ const GameInfo = ({ info, percent }) => {
           
           {/* Title + View In Store */}
           <Grid item xs={7} borderleft={2} sx={{ display: 'flex', flexWrap: 'wrap', width: '100%', pl: '1rem' }}>
-            <Grid item xs={8} sx={{ height: '25%' }}>
+            <Grid item xs={8} sx={{ height: '20%' }}>
               <Text variant='h4' lines={2}>
                 {info.game.name}
               </Text>
