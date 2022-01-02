@@ -26,11 +26,10 @@ const GameInfo = ({ info, percent }) => {
             <Avatar
               variant='square'
               src={`https://cdn.cloudflare.steamstatic.com/steam/apps/${info.game.appid}/header.jpg`}
-              sx={{ width: '100%', height: 'auto', boxShadow: 5, mb: '5rem'}}
+              sx={{ width: '100%', height: 'auto', maxHeight: '40%', boxShadow: 5, mb: '2rem' }}
             />
-
+              
             <PercentCircle title='Achievements' percent={parseInt(percent, 10) || 0} size={200} />
-            
           </Grid>
           
           {/* Title + View In Store */}
