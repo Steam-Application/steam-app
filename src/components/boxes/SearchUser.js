@@ -28,7 +28,8 @@ const SearchUser = () => {
 
   return (
     <>
-			<Box mb='4rem'>
+			{/* Search Box */}
+			<Box sx={{ mb: '4rem', height: '4rem' }}>
 				<Grid container>
 					<Text color='white' variant='subtitle1'> Search User </Text>
 					<Tooltip arrow title='Input Profile URL or SteamId' placement='right'>
@@ -37,6 +38,8 @@ const SearchUser = () => {
 				</Grid>
 				<SearchBox search={search} />
 			</Box>
+
+			{/* User Box */}
       {user && (
 				<>
 					{user === 'No User' ? (

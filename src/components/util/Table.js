@@ -13,7 +13,7 @@ const CustomLoadingOverlay = () => {
   );
 }
 
-const Table = ({ id, headers, customData, getData, params, defaultSort, onRowClick, onError }) => {
+const Table = ({ id, headers, customData, getData, params, defaultSort, onRowClick, customFooter, onError }) => {
   const [data, setData] = useState([]);
   const [sort, setSort] = useState(defaultSort);
   const [loading, setLoading] = useState(false);
@@ -41,7 +41,10 @@ const Table = ({ id, headers, customData, getData, params, defaultSort, onRowCli
 
   return (
     <DataGrid
-      components={{ LoadingOverlay: CustomLoadingOverlay }}
+      components={{
+        LoadingOverlay: CustomLoadingOverlay,
+        Footer: customFooter
+      }}
       columns={headers}
       rows={customData || data || []}
       getRowId={row => row[id]}

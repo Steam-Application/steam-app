@@ -17,7 +17,7 @@ const GameCard = ({ game }) => {
           component='img'
           variant='square'
           image={`https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/header.jpg`}
-          height='auto'
+          sx={{ maxHeight: '100px' }}
         />
         <Box sx={{ height: '40%', maxHeight: '40%' }}>
           <OverflowText variant='subtitle1' sx={{ pl: '1rem', pr: '0.5rem' }}>

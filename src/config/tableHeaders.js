@@ -9,7 +9,7 @@ export const GameLibraryHeaders = [
   { 
     field: 'logo',
     headerName: 'Logo',
-    flex: 0.25, 
+    width: 125, 
     sortable: false,
     renderCell: (params) => (
       <Avatar

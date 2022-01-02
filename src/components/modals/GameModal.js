@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, Tab } from '@mui/material';
+import { Modal, Box, Tab, TableFooter} from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
-import { Table, Loading, useNotification } from '../util';
 import { GameInfo } from '../boxes';
+import { CustomPagination, Table, Loading, useNotification } from '../util';
 import { AchievementHeaders } from '../../config/tableHeaders';
 import { AchievementModalStyle as style } from './modalStyles';
 import { getGame } from '../../api/games';
 import { getAchievements } from '../../api/achievements';
+
+const AchievementFooter = () => {
+  return (
+    <TableFooter sx={{ pl: '0.5rem', pr: '0.5rem', display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+      <CustomPagination />
+    </TableFooter>
+  )
+}
 
 const GameModal = ({ steamid, gameid, handleClose }) => {
   const [sendNotificaiton] = useNotification();
@@ -84,6 +92,7 @@ const GameModal = ({ steamid, gameid, handleClose }) => {
                 customData={achievementData?.achieved}
                 headers={AchievementHeaders}
                 defaultSort={[{ field: 'percent', sort: 'desc' }]}
+                customFooter={AchievementFooter}
               />
             ) : (
               <Loading size={50} />
@@ -98,6 +107,7 @@ const GameModal = ({ steamid, gameid, handleClose }) => {
                 customData={achievementData?.locked}
                 headers={AchievementHeaders}
                 defaultSort={[{ field: 'percent', sort: 'desc' }]}
+                customFooter={AchievementFooter}
               />
             ) : (
               <Loading size={50} />
