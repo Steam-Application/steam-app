@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory, useParams } from 'react-router';
-import { Paper, Grid, Stack, Tab, TableFooter } from '@mui/material';
+import { Paper, Grid, Stack, Tab, Box } from '@mui/material';
 import { TabList, TabPanel, TabContext } from '@mui/lab';
 import { UserCard, GameCard, getEmptyGameCards } from '../components/cards';
 import { GameModal } from '../components/modals';
@@ -12,23 +12,23 @@ import { getRecentGames, getOwnedGames } from '../api/games';
 
 const GameLibraryFooter = () => {
   return (
-    <TableFooter sx={{ pl: '0.5rem', pr: '0.5rem', display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+    <Box sx={{ pl: '0.5rem', pr: '0.5rem', display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
       <Text sx={{ flexGrow: 1 }}>
         Select a game to view more details!
       </Text>
       <CustomPagination />
-    </TableFooter>
+    </Box>
   )
 }
 
 const FriendsListFooter = () => {
   return (
-    <TableFooter sx={{ pl: '0.5rem', pr: '0.5rem', display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
+    <Box sx={{ pl: '0.5rem', pr: '0.5rem', display: 'flex', justifyContent: 'right', alignItems: 'center' }}>
       <Text sx={{ flexGrow: 1 }}>
         Select a friend to view their profile!
       </Text>
       <CustomPagination />
-    </TableFooter>
+    </Box>
   )
 }
 

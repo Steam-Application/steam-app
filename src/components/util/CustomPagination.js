@@ -7,7 +7,8 @@ const CustomPagination = () => {
   const [state] = useGridState(apiRef);
 
   return (
-    <Box sx={{ display: '', float: 'right' }}> 
+    <Box sx={{ float: 'right' }}>
+      {/* Console Error Here -- Can't Solve */}
       <TablePagination
         count={state.pagination.rowCount}
         page={state.pagination.page}
