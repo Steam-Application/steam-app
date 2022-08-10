@@ -11,15 +11,15 @@ const GameCard = ({ game }) => {
   }
 
   return (
-    <Card onClick={onCardClick} sx={{ height: '17.5%', maxHeight: '17.5%' }}>
+    <Card onClick={onCardClick} sx={{ height: '17.5%' }}>
       <CardActionArea sx={{ height: '100%' }}>
         <CardMedia
           component='img'
           variant='square'
           image={`https://cdn.cloudflare.steamstatic.com/steam/apps/${game.appid}/header.jpg`}
-          sx={{ maxHeight: '100px' }}
+          sx={{ maxHeight: '70%' }}
         />
-        <Box sx={{ height: '40%', maxHeight: '40%' }}>
+        <Box>
           <OverflowText variant='subtitle1' sx={{ pl: '1rem', pr: '0.5rem' }}>
             {game.name}
           </OverflowText>
