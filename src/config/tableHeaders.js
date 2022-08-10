@@ -14,7 +14,7 @@ export const GameLibraryHeaders = [
     renderCell: (params) => (
       <Avatar
         variant='square'
-        src={`https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/${params.row.appid}/${params.row.img_logo_url}.jpg`}
+        src={`https://cdn.cloudflare.steamstatic.com/steamcommunity/public/images/apps/${params.row.appid}/${params.row.img_icon_url}.jpg`}
         sx={{ width: 'auto' }}
       />
     )
